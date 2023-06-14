@@ -1,1 +1,7 @@
+# Cache files
 *.pyc
+__pycache__
+
+
+# Image result files
+*result.jpg
