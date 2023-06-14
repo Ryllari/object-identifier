@@ -1,7 +1,6 @@
 import cv2, os
 import matplotlib.pyplot as plt
 
-
 path_train = "../OID/Dataset/train"
 path_test = "../OID/Dataset/test"
 path_validation = "../OID/Dataset/validation"
@@ -12,6 +11,11 @@ path_validation_p = "../dataset/validation"
 
 classes = os.listdir(path_train)
 n_classes=len(classes)
+
+os.mkdir(path_train_p)
+os.mkdir(path_test_p)
+os.mkdir(path_validation_p)
+
 
 def grayscale(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

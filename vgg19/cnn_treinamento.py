@@ -2,6 +2,7 @@ import tensorflow as tf
 from keras.losses import CategoricalCrossentropy
 import os
 from pdi import *
+from criar_pastas import criar_pastas
 
 pdi_train = False 
 pdi_test = False
@@ -9,6 +10,9 @@ pdi_validation = False
 
 classes = os.listdir(path_train)
 n_classes=len(classes)
+
+
+criar_pastas()
 
 if pdi_train:
     pp_save(path_train, path_train_p)
