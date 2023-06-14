@@ -5,3 +5,11 @@ __pycache__
 
 # Image result files
 *result.jpg
+
+##
+/venv/
+OIDv4_ToolKit
+.vscode
+__pycache__
+
+modelo.h5
