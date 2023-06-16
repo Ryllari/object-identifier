@@ -1,0 +1,58 @@
+.introducao-bg {
+  background-color: rgba(30, 30, 30, 1);
+}
+
+.teste {
+  width: 40px;
+  height: 6px;
+  background: linear-gradient(89.79deg, #2afb99 1.4%, #ffffff 101.09%);
+  border-radius: 4px;
+}
+
+.container {
+  padding: 4rem;
+  margin-left: 1rem;
+  display: flex;
+  overflow: auto;
+  min-height: 35vh;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.frame45 {
+  gap: 16px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.text-introducao {
+  color: rgba(243, 246, 247, 1);
+  width: 497px;
+  height: auto;
+  font-size: 64px;
+  text-align: left;
+  font-weight: 400;
+  line-height: 150%;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.text1 {
+  color: var(--dl-color-primarybluedark-05f3f6f7);
+  font-weight: 400;
+}
+.text3 {
+  color: rgba(255, 255, 255, 1);
+  width: 617px;
+  height: auto;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 400;
+  line-height: 150%;
+  font-stretch: normal;
+  text-decoration: none;
+}
+.introducao {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0px 40px;
+}

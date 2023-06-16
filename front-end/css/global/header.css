@@ -1,0 +1,31 @@
+.header-bg {
+  background-color: rgba(30, 30, 30, 1);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: end;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.header-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-right: 25rem;
+}
+
+.text {
+  color: rgba(255, 255, 255, 1);
+  height: auto;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 400;
+  line-height: 150%;
+  font-stretch: normal;
+  text-decoration: none;
+}
