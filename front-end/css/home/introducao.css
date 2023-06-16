@@ -35,6 +35,7 @@
   line-height: 150%;
   font-stretch: normal;
   text-decoration: none;
+  margin-top: 2rem;
 }
 .text1 {
   color: var(--dl-color-primarybluedark-05f3f6f7);
