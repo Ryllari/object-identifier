@@ -9,9 +9,8 @@
   border-radius: 4px;
 }
 
-.container {
-  padding: 4rem;
-  margin-left: 1rem;
+.intro-container {
+  padding: 4rem 5rem;
   display: flex;
   overflow: auto;
   min-height: 35vh;
