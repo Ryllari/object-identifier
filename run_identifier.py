@@ -28,7 +28,7 @@ def main():
 
         elif option in ['1', '2', '3']:
             img_path = input("\nAgora digite o caminho da imagem que irá utilizar:")
-            ssd.identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
+            ssd.local_identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
             pass
 
         else:

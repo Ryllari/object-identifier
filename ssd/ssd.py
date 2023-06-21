@@ -1,6 +1,7 @@
 import os
 import cv2
-
+import numpy as np
+from PIL import Image
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 PROTO = os.path.join(DIR, "MobileNetSSD_deploy.prototxt")
@@ -14,12 +15,23 @@ classNames = { 0: 'background',
     17: 'sheep', 18: 'sofa', 19: 'train', 20: 'tvmonitor' }
      
 
-def identify_objects(img_path_file, output_dir):
+def local_identify_objects(img_path_file, output_dir):
     img = cv2.imread(img_path_file)
     
-    img_resized = cv2.resize(img , (300 , 300))
+    image = identify_objects(img, from_web=False)
+    output_filename = os.path.join(output_dir, "ssd-result.jpg")
+    cv2.imwrite(output_filename, image)
+    print(f"Resultado salvo em: {output_filename}")
+    return image
+
+
+def identify_objects(img, from_web=True):
+    if from_web:
+        img = Image.open(img)
+        img = np.array(img)
+    # img = cv2.resize(img , (300 , 300))
     blob = cv2.dnn.blobFromImage(
-        img_resized,
+        img,
         0.007843,
         (300, 300),
         (127.5, 127.5, 127.5), 
@@ -27,6 +39,7 @@ def identify_objects(img_path_file, output_dir):
     )
 
     # Get from trained base
+    # TODO: try use cv2.dnn.readNetFromTensorflow
     net = cv2.dnn.readNetFromCaffe(PROTO , WEIGHTS)
     net.setInput(blob)
 
@@ -35,9 +48,7 @@ def identify_objects(img_path_file, output_dir):
     detection = detections.squeeze()
 
     image = generate_image(img, detection)
-    output_filename = os.path.join(output_dir, "ssd-result.jpg")
-    cv2.imwrite(output_filename, image)
-    print(f"Resultado salvo em: {output_filename}")
+    return image
 
 
 def generate_image(img, detection):
