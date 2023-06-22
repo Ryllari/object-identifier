@@ -1,6 +1,7 @@
 import numpy as np
 import streamlit as st
 from ssd import ssd
+from yolo import yolo
 
 input_form = st.form(key='input_form')
 option = input_form.radio(
@@ -14,6 +15,17 @@ if submitted:
     if option == 'SSD':
         st.write('Identificar objetos usando:', option)
         id_image = ssd.identify_objects(uploaded_file)
+        with col1:
+            if uploaded_file:
+                st.image(uploaded_file, caption='Imagem base')
+        with col2:
+            if id_image.any():
+                st.image(id_image, caption='Imagem resultante')
+
+    if option == 'YOLO':
+        st.write('Identificar objetos usando:', option)
+        id_image = yolo.identify_objects(uploaded_file)
+        
         with col1:
             if uploaded_file:
                 st.image(uploaded_file, caption='Imagem base')

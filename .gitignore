@@ -5,3 +5,6 @@ __pycache__
 
 # Image result files
 *result.jpg
+
+# Redes Neurais
+yolo/yolov3.weights
