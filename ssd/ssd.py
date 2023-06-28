@@ -18,11 +18,11 @@ classNames = { 0: 'background',
 def local_identify_objects(img_path_file, output_dir):
     img = cv2.imread(img_path_file)
     
-    image = identify_objects(img, from_web=False)
+    image, y_ssd = identify_objects(img, from_web=False)
     output_filename = os.path.join(output_dir, "ssd-result.jpg")
     cv2.imwrite(output_filename, image)
     print(f"Resultado salvo em: {output_filename}")
-    return image
+    return image, y_ssd
 
 
 def identify_objects(img, from_web=True):
@@ -47,13 +47,15 @@ def identify_objects(img, from_web=True):
     detections = net.forward()
     detection = detections.squeeze()
 
-    image = generate_image(img, detection)
-    return image
+    image, y_ssd = generate_image(img, detection)
+    return image, y_ssd
 
 
 def generate_image(img, detection):
     height , width , _ = img.shape
     detection_height = detection.shape[0]
+
+    y_ssd = []
     
     for i in range(detection_height):
         conf = detection[i , 2]
@@ -69,6 +71,8 @@ def generate_image(img, detection):
             img = cv2.rectangle(img, top_left , bottom_right , (0 , 255 , 0) , 3)
             img = cv2.putText(img, class_name , top_left, cv2.FONT_HERSHEY_SIMPLEX , 
                             1 , (255 , 0 , 0) , 2 , cv2.LINE_AA)    
+            
+            y_ssd.append(class_name)
 
-    return img
+    return img, y_ssd
     
