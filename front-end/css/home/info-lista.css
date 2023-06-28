@@ -1,3 +1,37 @@
+.borderimg{
+  border-top-left-radius: 5px ;
+  border-top-right-radius: 5px;
+}
+
+.img{
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: auto;
+  background-color: #fff;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.textp{
+  font-size: 16px;
+  font-weight: 600;
+  padding: .5rem;
+}
+
+.textpp{
+  color: #979797;
+  font-size: 12px;
+  padding: .5rem;
+}
+
+.gallery{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
 .info-lista {
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +47,10 @@
 .section01 {
   padding: 2rem 4rem;
   border-inline-end: 1px solid #fff;
+}
+
+.equipeTitle {
+  padding: 5rem 8.5rem;
 }
 
 .section02 {
@@ -51,10 +89,6 @@
   color: #ffffff;
   font-size: 16px;
   line-height: 24px;
-}
-
-.info-lista img {
-  margin-bottom: 16px;
 }
 
 @media (max-width: 800px) {

@@ -34,9 +34,16 @@
 }
 
 img {
+  max-width:500px;
+    max-height:350px;
+    width: auto;
+    height: auto;
+}
+
+/* img {
   margin: -6px;
   padding-right: 1rem;
-}
+} */
 
 @media (max-width: 800px) {
   .footer > img {
