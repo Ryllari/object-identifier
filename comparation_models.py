@@ -8,7 +8,14 @@ classNames = { 0: 'background',
     14: 'motorbike', 15: 'person', 16: 'pottedplant',
     17: 'sheep', 18: 'sofa', 19: 'train', 20: 'tvmonitor' }
 
+def to_label_indices(y_yolo, y_cnn, y_ssd):
+    y_yolo = [list(classNames.keys())[list(classNames.values()).index(label)] for label in y_yolo]
+    y_cnn = [list(classNames.keys())[list(classNames.values()).index(label)] for label in y_cnn]
+    y_ssd = [list(classNames.keys())[list(classNames.values()).index(label)] for label in y_ssd]
+    return y_yolo, y_cnn, y_ssd
+
 def comparation_models(y_true, y_yolo, y_cnn, y_ssd):
+    y_yolo, y_cnn, y_ssd = to_label_indices(y_yolo,y_cnn,y_ssd)
 
     # Cálculo da matriz de confusão
     cm_yolo = multilabel_confusion_matrix(y_true, y_yolo)
@@ -47,10 +54,10 @@ def comparation_models(y_true, y_yolo, y_cnn, y_ssd):
     print("Acurácia - SDD:", accuracy_sdd)
 
 #Exemplo:
-y_true=[3,4,5,6,3,4,5,6]
-y_ssd=[3,4,5,6,3,4,5,6]
-y_yolo=[3,4,5,6,3,4,5,6]
-y_cnn=[3,4,5,6,3,4,5,6]
+y_true=[4,2,7,2]
+y_ssd=['boat', 'car','bicycle','car']
+y_yolo=['boat', 'car','bicycle','car']
+y_cnn=['boat', 'car','bicycle','car']
 
 
 comparation_models(y_true, y_yolo, y_cnn, y_ssd)
