@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import requests
-from tqdm import tqdm
+from stqdm import stqdm
 
 ###################################################################################
 # DAWNLOAD AUTOMATICO DA REDE YOLO
@@ -29,7 +29,7 @@ else:
     total_size = int(response.headers.get('content-length', 0))
     block_size = 1024  # Tamanho do bloco para atualização da barra de progresso
     with open(output_path, 'wb') as file:
-        with tqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=output_file) as t:
+        with stqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=output_file) as t:
             for data in response.iter_content(block_size):
                 file.write(data)
                 t.update(len(data))
