@@ -55,7 +55,7 @@ def generate_image(img, detection):
     height , width , _ = img.shape
     detection_height = detection.shape[0]
 
-    y_ssd = []
+    y_ssd = {}
     
     for i in range(detection_height):
         conf = detection[i , 2]
@@ -72,7 +72,10 @@ def generate_image(img, detection):
             img = cv2.putText(img, class_name , top_left, cv2.FONT_HERSHEY_SIMPLEX , 
                             1 , (255 , 0 , 0) , 2 , cv2.LINE_AA)    
             
-            y_ssd.append(class_name)
+            if class_name in y_ssd:
+                y_ssd[class_name].append(conf)
+            else:
+                y_ssd[class_name] = [conf]
 
     return img, y_ssd
     

@@ -10,3 +10,6 @@ run.cmd
 
 # Redes Neurais
 yolo/yolov3.weights
+
+OID/
+dataset/

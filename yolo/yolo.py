@@ -59,7 +59,7 @@ def local_identify_objects(img_path_file, output_dir):
     # Carregar imagem de entrada
     input_image = cv2.imread(img_path_file)
     
-    image = identify_objects(img, from_web=False)
+    image = identify_objects(input_image, from_web=False)
     output_filename = os.path.join(output_dir, "yolo-result.jpg")
     cv2.imwrite(output_filename, image)
     print(f"Resultado salvo em: {output_filename}")
