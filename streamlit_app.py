@@ -2,6 +2,17 @@ import numpy as np
 import streamlit as st
 from ssd import ssd
 from yolo import yolo
+from navbar import render_navbar
+from introducao import render_introducao
+from informacoes import render_informacoes
+from footer import render_footer
+from gallery import render_gallery
+
+with open('front-end/css/style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+render_navbar()
+render_introducao()
 
 input_form = st.form(key='input_form')
 option = input_form.radio(
@@ -35,3 +46,7 @@ if submitted:
             
     else:
         st.write('Opcao nao implementada ainda:', option)
+
+render_informacoes()
+render_gallery()
+render_footer()

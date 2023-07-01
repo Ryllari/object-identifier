@@ -43,6 +43,8 @@ def main():
             os.system('cls')
 
 
+    st.write('Corpo do site!')
+
 if __name__ == "__main__":
     # train yolo
     # train ssd
