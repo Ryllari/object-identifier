@@ -1,6 +1,6 @@
 import streamlit as st
 
-def render_informacoes():
+def render_information():
     st.markdown('''
     <div class='info01'>
       <div class='section01'>

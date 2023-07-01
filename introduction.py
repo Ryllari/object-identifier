@@ -1,6 +1,6 @@
 import streamlit as st
 
-def render_introducao():
+def render_introduction():
     st.markdown('''
     <main class="introducao-bg" id="sobreProjeto">
         <div class="introducao container">
