@@ -1,6 +1,6 @@
 import os
 from ssd import ssd
-
+from cnn import cnn
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,8 +28,12 @@ def main():
 
         elif option in ['1', '2', '3']:
             img_path = input("\nAgora digite o caminho da imagem que irá utilizar:")
-            ssd.local_identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
-            pass
+            if option == "1":
+                pass
+            elif option == "2":
+                cnn.identify_objects(img_path)
+            else: #3
+                ssd.local_identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
 
         else:
             print("Opção inválida!")
