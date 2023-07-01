@@ -9,6 +9,32 @@ import os
 import cv2
 import numpy as np
 from PIL import Image
+import requests
+from stqdm import stqdm
+
+###################################################################################
+# DAWNLOAD AUTOMATICO DA REDE YOLO
+# URL do arquivo de pesos YOLOv3
+url = "https://pjreddie.com/media/files/yolov3.weights"
+# Nome do arquivo de saída
+output_file = "yolo/yolov3.weights"
+# Caminho completo para salvar o arquivo na pasta corrente
+output_path = os.path.join(os.getcwd(), output_file)
+# Verificar se o arquivo já existe na pasta
+if os.path.exists(output_path):
+    print("O arquivo já existe na pasta.")
+else:
+    # Fazer o download do arquivo com a barra de progresso
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get('content-length', 0))
+    block_size = 1024  # Tamanho do bloco para atualização da barra de progresso
+    with open(output_path, 'wb') as file:
+        with stqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=output_file) as t:
+            for data in response.iter_content(block_size):
+                file.write(data)
+                t.update(len(data))
+    print("Download concluído. O arquivo foi salvo em:", output_path)
+##################################################################################
 
 # variáveis
 

@@ -2,6 +2,8 @@
 *.pyc
 __pycache__
 
+# debug files
+run.cmd
 
 # Image result files
 *result.jpg

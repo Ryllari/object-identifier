@@ -33,19 +33,20 @@ if submitted:
             if id_image.any():
                 st.image(id_image, caption='Imagem resultante')
 
-    if option == 'YOLO':
-        st.write('Identificar objetos usando:', option)
-        id_image = yolo.identify_objects(uploaded_file)
-        
-        with col1:
-            if uploaded_file:
-                st.image(uploaded_file, caption='Imagem base')
-        with col2:
-            if id_image.any():
-                st.image(id_image, caption='Imagem resultante')
+    else: 
+        if option == 'YOLO':
+            st.write('Identificar objetos usando:', option)
+            id_image = yolo.identify_objects(uploaded_file)
             
-    else:
-        st.write('Opcao nao implementada ainda:', option)
+            with col1:
+                if uploaded_file:
+                    st.image(uploaded_file, caption='Imagem base')
+            with col2:
+                if id_image.any():
+                    st.image(id_image, caption='Imagem resultante')
+            
+        else:
+            st.write('Opcao nao implementada ainda:', option)
 
 render_informacoes()
 render_gallery()
