@@ -60,6 +60,7 @@ if submitted:
                 "count_objects": "Quantidade de objetos",
             },
             hide_index=True,
+            use_container_width=True
         )
 
     elif option == 'YOLO':
