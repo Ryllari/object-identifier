@@ -116,6 +116,8 @@ def identify_objects(img, from_web=True):
 def generate_image(image, boxes, indices, confidences, class_ids):
     # Verificar se há pelo menos uma detecção
     if len(indices) > 0:
+
+        y_yolo = {}
         for i in indices.flatten():
             # Obter as coordenadas da caixa delimitadora
             x, y, w, h = boxes[i]
@@ -128,5 +130,9 @@ def generate_image(image, boxes, indices, confidences, class_ids):
             cv2.rectangle(image, (x, y), (x+w, y+h), color, 2)
             cv2.putText(image, f"{label} {confidence:.2f}", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
+            if label in y_yolo:
+                y_yolo[label].append(confidence)
+            else:
+                y_yolo[label] = [confidence]
     # Saída
-    return image
+    return image,y_yolo

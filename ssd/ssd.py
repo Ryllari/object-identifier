@@ -18,11 +18,11 @@ classNames = { 0: 'background',
 def local_identify_objects(img_path_file, output_dir):
     img = cv2.imread(img_path_file)
     
-    image, y_ssd = identify_objects(img, from_web=False)
+    image = identify_objects(img, from_web=False)
     output_filename = os.path.join(output_dir, "ssd-result.jpg")
     cv2.imwrite(output_filename, image)
     print(f"Resultado salvo em: {output_filename}")
-    return image, y_ssd
+    return image
 
 
 def identify_objects(img, from_web=True):
@@ -47,8 +47,8 @@ def identify_objects(img, from_web=True):
     detections = net.forward()
     detection = detections.squeeze()
 
-    image, y_ssd = generate_image(img, detection)
-    return image, y_ssd
+    image = generate_image(img, detection)
+    return image
 
 
 def generate_image(img, detection):
