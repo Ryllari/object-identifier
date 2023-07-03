@@ -115,9 +115,9 @@ def identify_objects(img, from_web=True):
 
 def generate_image(image, boxes, indices, confidences, class_ids):
     # Verificar se há pelo menos uma detecção
+    y_yolo = {}
     if len(indices) > 0:
 
-        y_yolo = {}
         for i in indices.flatten():
             # Obter as coordenadas da caixa delimitadora
             x, y, w, h = boxes[i]

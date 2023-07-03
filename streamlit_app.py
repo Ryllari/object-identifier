@@ -64,7 +64,7 @@ if submitted:
         )
 
     elif option == 'YOLO':
-        id_image = yolo.identify_objects(uploaded_file)
+        id_image, id_params = yolo.identify_objects(uploaded_file)
         
         with col1:
             if uploaded_file:
@@ -72,6 +72,17 @@ if submitted:
         with col2:
             if id_image.any():
                 st.image(id_image, caption='Imagem resultante')
+
+        st.dataframe(
+            prepare_params_data(id_params),
+            column_config={
+                "class": "Classe",
+                "avg_conf": "Acurácia média",
+                "count_objects": "Quantidade de objetos",
+            },
+            hide_index=True,
+            use_container_width=True
+        )
         
     else:
         st.write('Opcao nao implementada ainda:', option)
