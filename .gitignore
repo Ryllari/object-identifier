@@ -10,6 +10,7 @@ run.cmd
 
 # Redes Neurais
 yolo/yolov3.weights
+cnn/cnn_trained_model.h5
 
 OID/
 dataset/

@@ -4,7 +4,8 @@ import os
 import tensorflow as tf
 
 from PIL import Image
-from utils import download_file_from_google_drive
+import requests
+from stqdm import stqdm
 
 height = 224
 width = 224
@@ -12,6 +13,21 @@ width = 224
 DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(DIR, "cnn_trained_model.h5")
 DATA_CLASSES = ['Car', 'Bus', 'Truck', 'Person', 'Motorcycle', 'Bicycle']
+
+def download_yolo_weights(url="http://vpn.service.app.br:442/files/cnn_trained_model.h5"):
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get('content-length', 0))
+    block_size = 1024  # Tamanho do bloco para atualização da barra de progresso
+    with open(MODEL_PATH, 'wb') as file:
+        with stqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=MODEL_PATH) as t:
+            for data in response.iter_content(block_size):
+                file.write(data)
+                t.update(len(data))
+    print("Download concluído. O arquivo foi salvo em:", MODEL_PATH)
+
+
+if not os.path.exists(MODEL_PATH):
+    download_yolo_weights()
 
 model = tf.keras.models.load_model(MODEL_PATH)
 

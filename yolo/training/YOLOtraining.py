@@ -97,7 +97,7 @@ def train_yolo_model():
     train_data, val_data = train_data_generator(batch_size)
 
     yolo = YoloV3(classes=N_CLASSES)
-    print(yolo_anchors)
+    
     # Compilação do modelo
     yolo.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
