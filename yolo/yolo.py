@@ -1,47 +1,41 @@
-    #############################
-   # YOLO object detection 1.0 #
-  # Developed by Leandro Rego #
- #  contato@leandrorego.com  #
+#############################
+# YOLO object detection 1.0 #
+# Developed by Leandro Rego #
+#  contato@leandrorego.com  #
 #############################
 
 # inportar bibliotecas
 import os
 import cv2
-import numpy as np
-from PIL import Image
 import requests
+import numpy as np
+
+from PIL import Image
 from stqdm import stqdm
 
-###################################################################################
-# DAWNLOAD AUTOMATICO DA REDE YOLO
-# URL do arquivo de pesos YOLOv3
-url = "https://pjreddie.com/media/files/yolov3.weights"
-# Nome do arquivo de saída
-output_file = "yolo/yolov3.weights"
-# Caminho completo para salvar o arquivo na pasta corrente
-output_path = os.path.join(os.getcwd(), output_file)
-# Verificar se o arquivo já existe na pasta
-if os.path.exists(output_path):
-    print("O arquivo já existe na pasta.")
-else:
-    # Fazer o download do arquivo com a barra de progresso
-    response = requests.get(url, stream=True)
-    total_size = int(response.headers.get('content-length', 0))
-    block_size = 1024  # Tamanho do bloco para atualização da barra de progresso
-    with open(output_path, 'wb') as file:
-        with stqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=output_file) as t:
-            for data in response.iter_content(block_size):
-                file.write(data)
-                t.update(len(data))
-    print("Download concluído. O arquivo foi salvo em:", output_path)
-##################################################################################
-
-# variáveis
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG = os.path.join(DIR, "yolov3.cfg")
 WEIGHTS = os.path.join(DIR, "yolov3.weights")
 CLASSES = os.path.join(DIR, "classes.names")
+OUTPUT_FILE = "yolo/yolov3.weights"
+DATA_CLASSES = ['Car', 'Bus', 'Truck', 'Person', 'Motorcycle', 'Bicycle']
+
+
+def download_yolo_weights(url="https://pjreddie.com/media/files/yolov3.weights"):
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get('content-length', 0))
+    block_size = 1024  # Tamanho do bloco para atualização da barra de progresso
+    with open(WEIGHTS, 'wb') as file:
+        with stqdm(total=total_size, unit='B', unit_scale=True, unit_divisor=1024, miniters=1, desc=OUTPUT_FILE) as t:
+            for data in response.iter_content(block_size):
+                file.write(data)
+                t.update(len(data))
+    print("Download concluído. O arquivo foi salvo em:", WEIGHTS)
+
+
+if not os.path.exists(WEIGHTS):
+    download_yolo_weights()
 
 # Carregar a rede YOLO
 net = cv2.dnn.readNet(WEIGHTS, CONFIG)
@@ -59,7 +53,7 @@ def local_identify_objects(img_path_file, output_dir):
     # Carregar imagem de entrada
     input_image = cv2.imread(img_path_file)
     
-    image = identify_objects(input_image, from_web=False)
+    image, _ = identify_objects(input_image, from_web=False)
     output_filename = os.path.join(output_dir, "yolo-result.jpg")
     cv2.imwrite(output_filename, image)
     print(f"Resultado salvo em: {output_filename}")
@@ -92,8 +86,9 @@ def identify_objects(img, from_web=True):
         for detection in output:
             scores = detection[5:]
             class_id = np.argmax(scores)
+            class_name = classes[class_id].capitalize()
             confidence = scores[class_id]
-            if confidence > 0.5:
+            if confidence > 0.5 and class_name in DATA_CLASSES:
                 # Escalar as coordenadas da caixa delimitadora para o tamanho da imagem
                 center_x = int(detection[0] * width)
                 center_y = int(detection[1] * height)
@@ -115,7 +110,7 @@ def identify_objects(img, from_web=True):
 
 def generate_image(image, boxes, indices, confidences, class_ids):
     # Verificar se há pelo menos uma detecção
-    y_yolo = {}
+    y_yolo = {i: [] for i in DATA_CLASSES}
     if len(indices) > 0:
 
         for i in indices.flatten():
@@ -123,16 +118,14 @@ def generate_image(image, boxes, indices, confidences, class_ids):
             x, y, w, h = boxes[i]
             # Obter a classe e confiança da detecção
             class_id = class_ids[i]
-            label = classes[class_id]
+            label = classes[class_id].capitalize()
             confidence = confidences[i]
             # Desenhar a caixa delimitadora e exibir o rótulo da classe
             color = colors[class_id]
             cv2.rectangle(image, (x, y), (x+w, y+h), color, 2)
-            cv2.putText(image, f"{label} {confidence:.2f}", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            cv2.putText(image, f"{label}", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-            if label in y_yolo:
-                y_yolo[label].append(confidence)
-            else:
-                y_yolo[label] = [confidence]
+            y_yolo[label].append(confidence)
+            
     # Saída
     return image,y_yolo

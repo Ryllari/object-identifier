@@ -1,7 +1,7 @@
 import cv2, os
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from keras import backend as K
 from keras.losses import CategoricalCrossentropy
@@ -145,6 +145,7 @@ def generate_cnn_model(base_model, train_data, val_data):
             epochs = 2)
 
     model.save('cnn_trained_model.h5')
+    tf.keras.saving.save_model(model, 'trained_cnn', save_format="tf")
 
 # Pré-processamento das imagens e salvando em novo diretório
 prepare_dataset = input("Need prepare dataset? [Y/n]: ")

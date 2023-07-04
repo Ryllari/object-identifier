@@ -1,9 +1,10 @@
-import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
-import os
 import cv2
+import numpy as np
+import os
+import tensorflow as tf
+
 from PIL import Image
+from utils import download_file_from_google_drive
 
 height = 224
 width = 224
@@ -14,8 +15,19 @@ DATA_CLASSES = ['Car', 'Bus', 'Truck', 'Person', 'Motorcycle', 'Bicycle']
 
 model = tf.keras.models.load_model(MODEL_PATH)
 
+def local_identify_objects(img_path_file, output_dir):
+    image, _ = identify_objects(img_path_file, from_web=False)
+    output_filename = os.path.join(output_dir, "cnn-result.jpg")
+    cv2.imwrite(output_filename, image)
+    print(f"Resultado salvo em: {output_filename}")
+    return image
 
-def identify_objects(img_path):
+def identify_objects(img_path, from_web=True):
+    if from_web:
+        img = cv2.imread(img_path.name)
+    else:
+        img = cv2.imread(img_path)
+
     image = tf.keras.preprocessing.image.load_img(
         img_path, 
         target_size=(height,width)
@@ -27,10 +39,12 @@ def identify_objects(img_path):
 
     predicts = model.predict(process_images)
 
-    plt.figure(figsize = (12,5))
-    plt.subplot(1,2,1)
-    plt.imshow(images[0].astype(np.uint8))
+    y_ssd = {i: [] for i in DATA_CLASSES}
+    confs_array = predicts[0]
+    class_indexes = np.where(predicts > 0.5)[1]
+    for i in class_indexes:
+        class_name = DATA_CLASSES[i]
+        conf = confs_array[i]
+        y_ssd[class_name].append(conf)
 
-    plt.subplot(1,2,2)
-    plt.barh(DATA_CLASSES, predicts[0])
-    plt.show()
+    return img, y_ssd

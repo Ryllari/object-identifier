@@ -7,6 +7,8 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 PROTO = os.path.join(DIR, "MobileNetSSD_deploy.prototxt")
 WEIGHTS = os.path.join(DIR, "MobileNetSSD_deploy.caffemodel")
 
+DATA_CLASSES = ['Car', 'Bus', 'Truck', 'Person', 'Motorcycle', 'Bicycle']
+
 classNames = { 0: 'background',
     1: 'aeroplane', 2: 'bicycle', 3: 'bird', 4: 'boat',
     5: 'bottle', 6: 'bus', 7: 'car', 8: 'cat', 9: 'chair',
@@ -18,7 +20,7 @@ classNames = { 0: 'background',
 def local_identify_objects(img_path_file, output_dir):
     img = cv2.imread(img_path_file)
     
-    image = identify_objects(img, from_web=False)
+    image, _ = identify_objects(img, from_web=False)
     output_filename = os.path.join(output_dir, "ssd-result.jpg")
     cv2.imwrite(output_filename, image)
     print(f"Resultado salvo em: {output_filename}")
@@ -29,7 +31,7 @@ def identify_objects(img, from_web=True):
     if from_web:
         img = Image.open(img)
         img = np.array(img)
-    # img = cv2.resize(img , (300 , 300))
+
     blob = cv2.dnn.blobFromImage(
         img,
         0.007843,
@@ -38,8 +40,6 @@ def identify_objects(img, from_web=True):
         False
     )
 
-    # Get from trained base
-    # TODO: try use cv2.dnn.readNetFromTensorflow
     net = cv2.dnn.readNetFromCaffe(PROTO , WEIGHTS)
     net.setInput(blob)
 
@@ -55,12 +55,12 @@ def generate_image(img, detection):
     height , width , _ = img.shape
     detection_height = detection.shape[0]
 
-    y_ssd = {}
+    y_ssd = {i: [] for i in DATA_CLASSES}
     
     for i in range(detection_height):
         conf = detection[i , 2]
-        if conf > 0.5:
-            class_name = classNames[detection[i , 1]]
+        class_name = classNames[detection[i , 1]].capitalize()
+        if conf > 0.5 and class_name in DATA_CLASSES:
             x1 , y1 , x2 , y2 = detection[i , 3:]
             x1 *= width
             y1 *= height
@@ -72,10 +72,7 @@ def generate_image(img, detection):
             img = cv2.putText(img, class_name , top_left, cv2.FONT_HERSHEY_SIMPLEX , 
                             1 , (255 , 0 , 0) , 2 , cv2.LINE_AA)    
             
-            if class_name in y_ssd:
-                y_ssd[class_name].append(conf)
-            else:
-                y_ssd[class_name] = [conf]
-
-    return img, y_ssd
+            
+            y_ssd[class_name].append(conf)
     
+    return img, y_ssd

@@ -1,6 +1,7 @@
 import os
 from ssd import ssd
 from cnn import cnn
+from yolo import yolo
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,7 +18,7 @@ def main():
         print("\n1 - YOLO")
         print("\n2 - CNN")
         print("\n3 - SSD")
-        print("0 - Sair e desabilitar lembretes")
+        print("0 - Sair")
 
         option = input("\nEscolha uma opção:")
 
@@ -29,9 +30,9 @@ def main():
         elif option in ['1', '2', '3']:
             img_path = input("\nAgora digite o caminho da imagem que irá utilizar:")
             if option == "1":
-                pass
+                yolo.local_identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
             elif option == "2":
-                cnn.identify_objects(img_path)
+                cnn.local_identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
             else: #3
                 ssd.local_identify_objects(img_path_file=img_path, output_dir=CURRENT_DIR)
 
@@ -46,8 +47,6 @@ def main():
         else:
             os.system('cls')
 
-
-    st.write('Corpo do site!')
 
 if __name__ == "__main__":
     # train yolo

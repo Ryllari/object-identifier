@@ -1,5 +1,6 @@
 import numpy as np
 import streamlit as st
+from cnn import cnn
 from ssd import ssd
 from yolo import yolo
 from navbar import render_navbar
@@ -22,7 +23,7 @@ def prepare_params_data(id_params):
         "count_objects": [],
     }
     for key, conf_list in id_params.items():
-        params_data["class"].append(key)
+        params_data["class"].append(key.capitalize())
         qntd = len(conf_list)
         if qntd > 0:
             params_data['avg_conf'].append(sum(conf_list)/qntd)
@@ -83,9 +84,28 @@ if submitted:
             hide_index=True,
             use_container_width=True
         )
+    elif option == 'CNN':
+        id_image, id_params = cnn.identify_objects(uploaded_file)
         
+        with col1:
+            if uploaded_file:
+                st.image(uploaded_file, caption='Imagem base')
+        with col2:
+            if id_image.any():
+                st.image(id_image, caption='Imagem resultante')
+
+        st.dataframe(
+            prepare_params_data(id_params),
+            column_config={
+                "class": "Classe",
+                "avg_conf": "Acurácia média",
+                "count_objects": "Quantidade de objetos",
+            },
+            hide_index=True,
+            use_container_width=True
+        ) 
     else:
-        st.write('Opcao nao implementada ainda:', option)
+        st.write('Opção ainda não implementada:', option)
 
 render_information()
 render_gallery()
