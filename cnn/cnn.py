@@ -12,7 +12,6 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(DIR, "cnn_trained_model.h5")
 DATA_CLASSES = ['Car', 'Bus', 'Truck', 'Person', 'Motorcycle', 'Bicycle']
 
-model = tf.keras.models.load_model(MODEL_PATH)
 
 def local_identify_objects(img_path_file, output_dir):
     image, _ = identify_objects(img_path_file, from_web=False)
@@ -22,6 +21,7 @@ def local_identify_objects(img_path_file, output_dir):
     return image
 
 def identify_objects(img_path, from_web=True):
+    model = tf.keras.models.load_model(MODEL_PATH)
     if from_web:
         img = Image.open(img_path)
         img = np.array(img)
