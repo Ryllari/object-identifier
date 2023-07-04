@@ -39,8 +39,10 @@ def local_identify_objects(img_path_file, output_dir):
     return image
 
 def identify_objects(img_path, from_web=True):
+    model = tf.keras.models.load_model(MODEL_PATH)
     if from_web:
-        img = cv2.imread(img_path.name)
+        img = Image.open(img_path)
+        img = np.array(img)
     else:
         img = cv2.imread(img_path)
 
